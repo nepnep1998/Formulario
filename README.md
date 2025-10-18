@@ -1,41 +1,17 @@
-# Formulário de Contato
+# Formulário de Contato com Google Apps Script
 
-Formulário de contato responsivo com envio de email automático.
+Formulário que envia dados para Google Sheets e envia email de notificação.
 
-## 🚀 Como usar
+## 📊 Configuração
 
-1. **Configurar Formspree** (para receber os emails):
-   - Acesse [formspree.io](https://formspree.io)
-   - Crie uma conta gratuita
-   - Crie um novo formulário
-   - Copie o Form ID fornecido
+1. **Google Sheets**: Crie uma planilha com as colunas:
+   - Nome | Telefone | Email | Mensagem | Descrição Correta | Data
 
-2. **Configurar o formulário**:
-   - No arquivo `index.html`, substitua `SEU_FORM_ID_AQUI` pelo seu Form ID do Formspree
-   - Linha 87: `action="https://formspree.io/f/SEU_FORM_ID_AQUI"`
+2. **Google Apps Script**: 
+   - Cole o código do arquivo `code.gs`
+   - Implemente o web app
+   - Copie a URL e cole no `index.html`
 
-3. **Hospedar no GitHub Pages**:
-   - Faça push deste código para seu repositório
-   - Vá em Settings → Pages
-   - Selecione "Deploy from branch" → branch `main` → pasta `/ (root)`
-   - Salve
-
-4. **Seu formulário estará disponível em**: https://seu-usuario.github.io/nome-do-repositorio
-
-5. 
-## 📧 O que será enviado por email
-
-Cada submissão do formulário enviará um email com:
-- Nome completo
-- Telefone/WhatsApp
-- E-mail
-- Mensagem de ajuda
-- Resposta "Sim/Não" sobre a descrição
-
-## 🛠 Tecnologias
-
-- HTML5
-- CSS3 (com Gradients e Animações)
-- JavaScript (Validação e Máscaras)
-- Formspree (Backend de emails)
-- GitHub Pages (Hospedagem)
+3. **Deploy**: 
+   - Faça push para GitHub
+   - Ative GitHub Pages
