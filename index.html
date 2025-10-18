@@ -176,7 +176,8 @@
         </div>
         
         <div class="form-container">
-            <form id="contactForm" action="https://formspree.io/f/kovkrcpyE" method="POST">
+            <!-- FORMULÁRIO SIMPLES SEM JAVASCRIPT -->
+            <form action="https://formspree.io/f/kovkrcpyE" method="POST">
                 <div class="form-group">
                     <label for="name">Nome Completo <span class="required">*</span></label>
                     <input type="text" id="name" name="name" placeholder="Seu nome completo" required>
@@ -211,6 +212,10 @@
                     </div>
                 </div>
                 
+                <!-- Campo hidden para redirecionamento -->
+                <input type="hidden" name="_next" value="https://seusite.com/obrigado.html">
+                <input type="hidden" name="_subject" value="Novo contato do formulário">
+                
                 <button type="submit">Enviar Mensagem</button>
             </form>
             
@@ -219,50 +224,6 @@
     </div>
 
     <script>
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Mostrar mensagem de carregamento
-            showMessage('Enviando sua mensagem...', 'success');
-            
-            // Enviar formulário via Formspree
-            const form = this;
-            const formData = new FormData(form);
-            
-            fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => {
-                if (response.ok) {
-                    showMessage('✅ Obrigado! Sua mensagem foi enviada com sucesso. Entraremos em contato em breve.', 'success');
-                    form.reset();
-                } else {
-                    throw new Error('Erro no envio');
-                }
-            })
-            .catch(error => {
-                showMessage('❌ Erro ao enviar a mensagem. Você pode tentar novamente ou nos contatar diretamente.', 'error');
-            });
-        });
-        
-        function showMessage(text, type) {
-            const messageDiv = document.getElementById('message');
-            messageDiv.textContent = text;
-            messageDiv.className = 'message ' + type;
-            messageDiv.style.display = 'block';
-            
-            // Esconder a mensagem após 8 segundos (apenas para sucesso)
-            if (type === 'success') {
-                setTimeout(function() {
-                    messageDiv.style.display = 'none';
-                }, 8000);
-            }
-        }
-        
         // Máscara para telefone
         document.getElementById('phone').addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, '');
@@ -271,6 +232,18 @@
                 value = value.replace(/(\d{5})(\d)/, '$1-$2');
                 e.target.value = value;
             }
+        });
+        
+        // Feedback visual ao enviar
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const button = this.querySelector('button[type="submit"]');
+            button.textContent = 'Enviando...';
+            button.disabled = true;
+            
+            setTimeout(function() {
+                button.textContent = 'Enviar Mensagem';
+                button.disabled = false;
+            }, 3000);
         });
     </script>
 </body>
