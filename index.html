@@ -176,8 +176,8 @@
         </div>
         
         <div class="form-container">
-            <!-- FORMULÁRIO SIMPLES SEM JAVASCRIPT -->
-            <form action="https://formspree.io/f/kovkrcpyE" method="POST">
+            <!-- FORMULÁRIO SIMPLIFICADO E FUNCIONAL -->
+            <form id="contactForm" action="https://formspree.io/f/kovkrcpyE" method="POST">
                 <div class="form-group">
                     <label for="name">Nome Completo <span class="required">*</span></label>
                     <input type="text" id="name" name="name" placeholder="Seu nome completo" required>
@@ -212,11 +212,11 @@
                     </div>
                 </div>
                 
-                <!-- Campo hidden para redirecionamento -->
-                <input type="hidden" name="_next" value="https://seusite.com/obrigado.html">
+                <!-- Campos importantes para o Formspree -->
                 <input type="hidden" name="_subject" value="Novo contato do formulário">
+                <input type="text" name="_gotcha" style="display:none">
                 
-                <button type="submit">Enviar Mensagem</button>
+                <button type="submit" id="submitBtn">Enviar Mensagem</button>
             </form>
             
             <div id="message" class="message"></div>
@@ -233,17 +233,15 @@
                 e.target.value = value;
             }
         });
-        
-        // Feedback visual ao enviar
-        document.querySelector('form').addEventListener('submit', function(e) {
-            const button = this.querySelector('button[type="submit"]');
+
+        // Feedback visual ao enviar (SEM AJAX - submit normal)
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            const button = document.getElementById('submitBtn');
             button.textContent = 'Enviando...';
             button.disabled = true;
             
-            setTimeout(function() {
-                button.textContent = 'Enviar Mensagem';
-                button.disabled = false;
-            }, 3000);
+            // O formulário será enviado normalmente pelo navegador
+            // O Formspree redirecionará para uma página de confirmação
         });
     </script>
 </body>
