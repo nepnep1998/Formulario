@@ -176,10 +176,7 @@
         </div>
         
         <div class="form-container">
-            <!-- ENDPOINT CORRETO: xovkrryg -->
-            <form action="https://formspree.io/f/xovkrryg" method="POST">
-                <input type="hidden" name="_subject" value="Novo contato do formulário">
-                
+            <form id="contactForm">
                 <div class="form-group">
                     <label for="name">Nome Completo <span class="required">*</span></label>
                     <input type="text" id="name" name="name" placeholder="Seu nome completo" required>
@@ -216,6 +213,8 @@
                 
                 <button type="submit">Enviar Mensagem</button>
             </form>
+            
+            <div id="message" class="message"></div>
         </div>
     </div>
 
@@ -230,18 +229,64 @@
             }
         });
 
-        // Feedback visual ao enviar
-        document.querySelector('form').addEventListener('submit', function(e) {
+        // Envio para Google Apps Script
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
             const button = this.querySelector('button[type="submit"]');
             const originalText = button.textContent;
+            
             button.textContent = 'Enviando...';
             button.disabled = true;
+
+            const formData = new FormData(this);
+            const data = {
+                name: formData.get('name'),
+                phone: formData.get('phone'),
+                email: formData.get('email'),
+                help: formData.get('help'),
+                description_accurate: formData.get('description_accurate'),
+                timestamp: new Date().toLocaleString('pt-BR')
+            };
+
+            // URL do Google Apps Script - VOCÊ VAI SUBSTITUIR ESTA URL
+            const scriptURL = 'https://script.google.com/macros/s/SEU_SCRIPT_ID_AQUI/exec';
             
-            setTimeout(function() {
+            fetch(scriptURL, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.result === 'success') {
+                    showMessage('✅ Mensagem enviada com sucesso! Entraremos em contato em breve.', 'success');
+                    document.getElementById('contactForm').reset();
+                } else {
+                    throw new Error('Erro no envio');
+                }
+            })
+            .catch(error => {
+                showMessage('❌ Erro ao enviar mensagem. Tente novamente ou nos contate diretamente.', 'error');
+            })
+            .finally(() => {
                 button.textContent = originalText;
                 button.disabled = false;
-            }, 3000);
+            });
         });
+
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = 'message ' + type;
+            messageDiv.style.display = 'block';
+            
+            setTimeout(function() {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
     </script>
 </body>
 </html>
